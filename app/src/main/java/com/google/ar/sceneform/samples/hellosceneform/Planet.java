@@ -16,6 +16,7 @@
 package com.google.ar.sceneform.samples.hellosceneform;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.TextView;
 import com.google.ar.sceneform.FrameTime;
@@ -27,6 +28,9 @@ import com.google.ar.sceneform.rendering.Material;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.rendering.ShapeFactory;
 import com.google.ar.sceneform.rendering.ViewRenderable;
+import com.google.ar.sceneform.ux.ArFragment;
+import java.util.Vector;
+
 
 /**
  * Node that represents a planet.
@@ -46,26 +50,34 @@ public class Planet extends Node implements Node.OnTapListener {
 
   private final String planetName;
 
+  private final GraphSettings mGraphSettings = new GraphSettings();
   //  private final ModelRenderable planetRenderable;
   private final GraphSettings solarSettings;
 
   private Node infoCard;
-  private Float mPreviousXPosition;
-  private Float mHeight;
+  //  private Node speedCard;
+  private Float mXPreviousPosition;
+  private Float mBarHeight;
   private Node planetVisual;
   private final Context context;
   private Material mMaterial;
-
+  //  private ArFragment arFragment;
+  private boolean isMaxSpeed = false;
+  private Float mBarWidth;
+  private ModelRenderable mArrowRenderable;
 
   public Planet(Context context, String planetName, Material mMaterial,
-      Float mHeight, Float mPreviousXPosition, GraphSettings solarSettings) {
+      Float mBarHeight, Float mXPreviousPosition, GraphSettings solarSettings,
+      boolean isMaxSpeed, Float mBarWidth, ModelRenderable mArrowRenderable) {
     this.context = context;
     this.planetName = planetName;
-
     this.mMaterial = mMaterial;
-    this.mHeight = mHeight;
-    this.mPreviousXPosition = mPreviousXPosition;
+    this.mBarHeight = mBarHeight;
+    this.mXPreviousPosition = mXPreviousPosition;
     this.solarSettings = solarSettings;
+    this.isMaxSpeed = isMaxSpeed;
+    this.mBarWidth = mBarWidth;
+    this.mArrowRenderable = mArrowRenderable;
     setOnTapListener(this);
   }
 
@@ -77,41 +89,50 @@ public class Planet extends Node implements Node.OnTapListener {
       throw new IllegalStateException("Scene is null!");
     }
 
-    if (infoCard == null) {
-      infoCard = new Node();
-      infoCard.setParent(this);
-      infoCard.setEnabled(false);
-      infoCard.setLocalPosition(new Vector3(mPreviousXPosition, (mHeight ), 0.0f));
+    if (isMaxSpeed) {
+      if (infoCard == null) {
+        infoCard = new Node();
+        infoCard.setParent(this);
+        infoCard.setEnabled(true);
+        infoCard.setLocalScale(new Vector3(0.1f, 0.1f, 0.1f));
+        infoCard.setRenderable(mArrowRenderable);
+        infoCard.setLocalPosition(new Vector3(mXPreviousPosition, (mBarHeight), 0.0f));
 
-      ViewRenderable.builder()
-          .setView(context, R.layout.planet_card_view)
-          .build()
-          .thenAccept(
-              (renderable) -> {
-                infoCard.setRenderable(renderable);
-                TextView textView = (TextView) renderable.getView();
-                textView.setText(planetName);
-              })
-          .exceptionally(
-              (throwable) -> {
-                throw new AssertionError("Could not load plane card view.", throwable);
-              });
+        ViewRenderable.builder()
+            .setView(context, R.layout.planet_card_view)
+            .build()
+            .thenAccept(
+                (renderable) -> {
+                  infoCard.setRenderable(renderable);
+                  TextView textView = (TextView) renderable.getView();
+                  textView.setText(planetName);
+                })
+            .exceptionally(
+                (throwable) -> {
+                  throw new AssertionError("Could not load plane card view.", throwable);
+                });
+      }
+
     }
 
     if (planetVisual == null) {
       planetVisual = new Node();
       planetVisual.setParent(this);
-      planetVisual.setRenderable(getPlanetRenderable(mMaterial, mHeight));
-      planetVisual.setLocalPosition(new Vector3(mPreviousXPosition, 0.0f, 0.0f));
+      planetVisual.setRenderable(getPlanetRenderable(mMaterial, mBarHeight));
+      planetVisual.setLocalPosition(new Vector3(mXPreviousPosition, 0.0f, 0.0f));
 //      planetVisual.setLocalScale(new Vector3(planetScale, planetScale, planetScale));
     }
   }
 
   private ModelRenderable getPlanetRenderable(Material mMaterial, Float height) {
 
-    Float mYPosition = (height / 2);
+    Float mYAboveGround = (height / 2);
+//    Log.d("Distance 1", mGraphSettings.getCubeWidth() + " ");
     return ShapeFactory
-        .makeCylinder(0.1f, height, new Vector3(0.0f, mYPosition, 0.0f), mMaterial);
+        .makeCube(
+            new Vector3(mBarWidth, mBarHeight, mGraphSettings.getCubeLength()),
+            new Vector3(0.0f, mYAboveGround, 0.0f), mMaterial);
+
   }
 
   @Override
@@ -141,5 +162,6 @@ public class Planet extends Node implements Node.OnTapListener {
     Vector3 direction = Vector3.subtract(cameraPosition, cardPosition);
     Quaternion lookRotation = Quaternion.lookRotation(direction, Vector3.up());
     infoCard.setWorldRotation(lookRotation);
+
   }
 }

@@ -1,94 +1,122 @@
 package com.google.ar.sceneform.samples.hellosceneform;
 
+import android.support.annotation.NonNull;
+import com.google.ar.sceneform.rendering.Material;
+import com.google.ar.sceneform.rendering.ModelRenderable;
+import java.util.ArrayList;
+import java.util.List;
+
 public class GraphSettings {
 
-  /// Chamfer radius to use for the bars.
-  public Float chamferRadius = 0.0f;
-
-  /// Gap between series, expressed as a ratio of gap to bar width (Z-axis).
-  public Float seriesGap = 0.5f;
-
-  /// Gap between indices, expressed as a ratio of gap to bar length (X-axis).
-  public Float indexGap = 0.1f;
-
-  /// Gap between indices, expressed as a ratio of gap to bar length (X-axis).
-  public Float graphHeight = 0.1f;
-
-  /// Gap between indices, expressed as a ratio of gap to bar length (X-axis).
-  public Float graphWidth = 0.3f;
+  private List<Float> mSpeedList = new ArrayList<>();
 
 
-  /// Space to allow for the series labels, expressed as a ratio of label space to graph width (Z-axis).
-  public Float spaceForSeriesLabels = 0.2f;
+  private Float mGraphScaleFactor = 0.1f;
+  private Float mMaximumSpeed = 0.0f;
+  private Float mGraphTotalLength = 2.0f;
+  private Material mNormalMaterial, mMaxSpeedMaterial;
+  private ModelRenderable platformRenderable,arrowRenderable;
+  private Float mCubeWidth = 0.01f;
 
-  /// Space to allow for the index labels, expressed as a ratio of label space to graph length (X-axis).
-  public Float spaceForIndexLabels = 0.2f;
+  private Float mCubeLength = 0.5f;
 
-  /// Opacity of each bar in the graph.
-  public Float barOpacity = 1.0f;
+  private Float mSeriesGap = 0.01f;
 
+  private Float mCubeHeight = 0.1f;
 
-  public Float getGraphWidth() {
-    return graphWidth;
+  public Float getCubeHeight() {
+    return mCubeHeight;
   }
 
-  public void setGraphWidth(Float graphWidth) {
-    this.graphWidth = graphWidth;
+  public void setCubeHeight(Float cubeHeight) {
+    mCubeHeight = cubeHeight;
   }
 
-  public Float getGraphHeight() {
-    return graphHeight;
+  public Float getCubeLength() {
+    return mCubeLength;
   }
 
-  public void setGraphHeight(Float graphHeight) {
-    this.graphHeight = graphHeight;
-  }
-
-  public void setChamferRadius(Float chamferRadius) {
-    this.chamferRadius = chamferRadius;
-  }
-
-  public void setSeriesGap(Float seriesGap) {
-    this.seriesGap = seriesGap;
-  }
-
-  public void setIndexGap(Float indexGap) {
-    this.indexGap = indexGap;
-  }
-
-  public void setSpaceForSeriesLabels(Float spaceForSeriesLabels) {
-    this.spaceForSeriesLabels = spaceForSeriesLabels;
-  }
-
-  public void setSpaceForIndexLabels(Float spaceForIndexLabels) {
-    this.spaceForIndexLabels = spaceForIndexLabels;
-  }
-
-  public void setBarOpacity(Float barOpacity) {
-    this.barOpacity = barOpacity;
-  }
-
-  public Float getChamferRadius() {
-    return chamferRadius;
+  public void setCubeLength(Float cubeLength) {
+    mCubeLength = cubeLength;
   }
 
   public Float getSeriesGap() {
-    return seriesGap;
+    return mSeriesGap;
   }
 
-  public Float getIndexGap() {
-    return indexGap;
+  public void setSeriesGap(Float seriesGap) {
+    mSeriesGap = seriesGap;
   }
 
-  public Float getSpaceForSeriesLabels() {
-    return spaceForSeriesLabels;
+  public Float getCubeWidth() {
+    return mCubeWidth;
   }
 
-  public Float getSpaceForIndexLabels() {
-    return spaceForIndexLabels;
+  public void setCubeWidth(Float cubeWidth) {
+    mCubeWidth = cubeWidth;
   }
 
-  public Float getBarOpacity() {
-    return barOpacity;
+  public ModelRenderable getPlatformRenderable() {
+    return platformRenderable;
+  }
+
+  public void setPlatformRenderable(ModelRenderable platformRenderable) {
+    this.platformRenderable = platformRenderable;
+  }
+
+  public Material getNormalMaterial() {
+    return mNormalMaterial;
+  }
+
+  public void setNormalMaterial(Material normalMaterial) {
+    mNormalMaterial = normalMaterial;
+  }
+
+  public Material getMaxSpeedMaterial() {
+    return mMaxSpeedMaterial;
+  }
+
+  public void setMaxSpeedMaterial(Material maxSpeedMaterial) {
+    mMaxSpeedMaterial = maxSpeedMaterial;
+  }
+
+  public Float getGraphTotalLength() {
+    return mGraphTotalLength;
+  }
+
+  public void setGraphTotalLength(Float graphTotalLength) {
+    mGraphTotalLength = graphTotalLength;
+  }
+
+  public Float getMaximumSpeed() {
+    return mMaximumSpeed;
+  }
+
+  public void setMaximumSpeed(Float maximumSpeed) {
+    mMaximumSpeed = maximumSpeed;
+  }
+
+  public List<Float> getSpeedList() {
+    return mSpeedList;
+  }
+
+  public void setSpeedList(@NonNull List<Float> speedList) {
+    mSpeedList = speedList;
+  }
+
+  public Float getGraphScaleFactor() {
+    return mGraphScaleFactor;
+  }
+
+  public void setGraphScaleFactor(Float graphScaleFactor) {
+    mGraphScaleFactor = graphScaleFactor;
+  }
+
+  public ModelRenderable getArrowRenderable() {
+    return arrowRenderable;
+  }
+
+  public void setArrowRenderable(ModelRenderable arrowRenderable) {
+    this.arrowRenderable = arrowRenderable;
   }
 }

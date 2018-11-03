@@ -78,3 +78,16 @@ sceneform.asset('sampledata/models/andy.obj',
         'sampledata/models/andy.sfa',
         'src/main/res/raw/andy')
 
+
+
+sceneform.asset('../../../../../Documents/cinema4d/above.dae',
+        'default',
+        '../../../../../Documents/cinema4d/above.sfa',
+        'src/main/res/raw/above')
+
+
+
+sceneform.asset('sampledata/models/arrow.obj',
+        'default',
+        'sampledata/models/arrow.sfa',
+        'src/main/res/raw/arrow')
